@@ -1,0 +1,12 @@
+.git
+.venv
+node_modules
+data
+developement
+.serena
+.pytest_cache
+__pycache__
+*.pyc
+*.pptx
+inference_test/*.csv
+inference_test/__pycache__

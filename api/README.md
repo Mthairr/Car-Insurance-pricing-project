@@ -128,8 +128,21 @@ pytest api/tests -v
 ```
 
 ### Étape 5 — Intégration et déploiement (Docker + CI/CD)
-**Statut : à faire.**
-- `Dockerfile` : empaqueter l'API + ses dépendances dans une image autonome
+**Statut : Docker fait, CI/CD et déploiement Render à faire.**
+
+- [`Dockerfile`](../Dockerfile) : image basée sur `python:3.14-slim`, construite et testée avec succès (build + `docker run` + requêtes sur toutes les routes, résultats identiques à l'exécution locale). Taille finale : **859 Mo** (optimisée : xgboost est installé sans sa dépendance GPU `nvidia-nccl-cu13`, inutile en inférence CPU, ce qui réduit l'image de 1,28 Go à 859 Mo).
+- [`.dockerignore`](../.dockerignore) : exclut notebooks, données d'entraînement, `.venv`, `node_modules`, etc. du contexte de build
+- Un `HEALTHCHECK` intégré ping `/health` toutes les 30 secondes
+
+**Construire et lancer l'image en local :**
+```bash
+docker build -t prime-api .
+docker run --rm -p 8000:8000 prime-api
+# puis, dans un autre terminal :
+curl http://localhost:8000/health
+```
+
+**Reste à faire** :
 - CI (GitHub Actions) : installation des dépendances, exécution des tests, vérification de la qualité du code, à chaque push
 - Déploiement : hébergement sur **Render** (solution choisie par l'équipe)
 
