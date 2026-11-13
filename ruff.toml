@@ -1,0 +1,5 @@
+[lint]
+# ASYNC230 : signale l'ouverture de fichiers "bloquante" dans une fonction async.
+# Volontairement ignorée ici : api/main.py charge les modèles une seule fois au
+# démarrage (lifespan), avant que l'API ne serve la moindre requête concurrente.
+ignore = ["ASYNC230"]

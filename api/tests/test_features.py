@@ -6,7 +6,7 @@ ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT / "api") not in sys.path:
     sys.path.insert(0, str(ROOT / "api"))
 
-from features import COLONNES_FREQUENCE, preparer_frequence, preparer_montant  # noqa: E402
+from features import COLONNES_FREQUENCE, preparer_frequence, preparer_montant
 
 CONTRAT_BASE = {
     "bonus": 0.5, "type_contrat": "Maxi", "conducteur2": "No",

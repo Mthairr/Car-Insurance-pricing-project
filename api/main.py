@@ -23,8 +23,8 @@ for chemin in (PROJECT_ROOT / "inference_test", BASE_DIR):
     if str(chemin) not in sys.path:
         sys.path.insert(0, str(chemin))
 
-from features import preparer_frequence, preparer_montant  # noqa: E402
-from schemas import (  # noqa: E402
+from features import preparer_frequence, preparer_montant
+from schemas import (
     AmountResponse,
     Contrat,
     FrequencyResponse,

@@ -3,7 +3,6 @@
 Les champs reprennent les colonnes de data/train.csv (hors index et cibles
 nombre_sinistres / montant_sinistre), conformément au contrat d'API du TD.
 """
-from typing import Optional
 
 from pydantic import BaseModel, Field
 
@@ -24,10 +23,10 @@ class Contrat(BaseModel):
     age_conducteur1: int
     age_conducteur2: int
     sex_conducteur1: str
-    sex_conducteur2: Optional[str] = None
+    sex_conducteur2: str | None = None
     anciennete_permis1: int
     anciennete_permis2: int
-    anciennete_vehicule: Optional[float] = None
+    anciennete_vehicule: float | None = None
     cylindre_vehicule: int
     din_vehicule: int
     essence_vehicule: str
