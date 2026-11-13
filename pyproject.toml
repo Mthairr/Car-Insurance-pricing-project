@@ -1,0 +1,44 @@
+[project]
+name = "tarification"
+version = "0.1.0"
+description = "Tarification automobile par Machine Learning : modèles de fréquence et de montant exposés via une API"
+readme = "README.md"
+requires-python = ">=3.12,<3.14"
+dependencies = [
+    "numpy==2.5.3",
+    "pandas==3.0.6",
+    "pydantic>=2.9",
+    "scikit-learn==1.9.1",
+    "xgboost==3.4.1",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "ruff>=0.8",
+]
+notebooks = [
+    "ipykernel",
+    "matplotlib",
+    "seaborn",
+    "scipy",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/tarification"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py312"
+extend-exclude = ["developement"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "UP", "B"]
+ignore = ["N803", "N806"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
