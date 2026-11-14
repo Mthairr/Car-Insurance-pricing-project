@@ -7,6 +7,8 @@ invisibles ici.
 
 Lancement : streamlit run ui/app.py
 """
+import time
+
 import requests
 import streamlit as st
 
@@ -90,11 +92,31 @@ if submitted:
         "poids_vehicule": poids_vehicule,
     }
 
-    try:
-        with st.spinner("Appel de l'API (peut prendre jusqu'à une minute si le service dormait)..."):
-            reponse = requests.post(f"{API_URL}/predict", json=contrat, timeout=90)
-    except requests.exceptions.RequestException as exc:
-        st.error(f"Impossible de contacter l'API : {exc}")
+    # Si l'API dormait (plan gratuit Render), le proxy peut renvoyer une 502
+    # avant même que l'API ait fini de se réveiller : on réessaie quelques
+    # fois, la tentative suivante tombe alors sur un service déjà réveillé.
+    MAX_TENTATIVES = 4
+    reponse = None
+    erreur = None
+    for tentative in range(1, MAX_TENTATIVES + 1):
+        try:
+            with st.spinner(
+                f"Appel de l'API (tentative {tentative}/{MAX_TENTATIVES}, "
+                "le service peut être en train de se réveiller)..."
+            ):
+                reponse = requests.post(f"{API_URL}/predict", json=contrat, timeout=90)
+            erreur = None
+        except requests.exceptions.RequestException as exc:
+            erreur = exc
+            reponse = None
+
+        if reponse is not None and reponse.status_code not in (502, 503, 504):
+            break
+        if tentative < MAX_TENTATIVES:
+            time.sleep(5)
+
+    if erreur is not None:
+        st.error(f"Impossible de contacter l'API : {erreur}")
     else:
         if reponse.status_code == 200:
             resultat = reponse.json()
