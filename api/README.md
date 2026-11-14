@@ -142,9 +142,17 @@ docker run --rm -p 8000:8000 prime-api
 curl http://localhost:8000/health
 ```
 
-**Reste à faire** :
-- CI (GitHub Actions) : installation des dépendances, exécution des tests, vérification de la qualité du code, à chaque push
-- Déploiement : hébergement sur **Render** (solution choisie par l'équipe)
+**5b. CI (GitHub Actions) — fait**
+[`.github/workflows/ci.yml`](../.github/workflows/ci.yml) : à chaque push, un premier job installe les dépendances, vérifie la qualité du code (`ruff`) et lance les 16 tests (`pytest`) ; un second job (déclenché seulement si le premier passe) reconstruit l'image Docker pour s'assurer qu'elle build toujours.
+
+**5c. Déploiement (Render) — fait**
+Service web déployé sur le plan **Free** de Render, à partir du `Dockerfile`, branche `Moussa_1`.
+
+**URL publique** : **https://car-insurance-pricing-project.onrender.com**
+- Documentation interactive : https://car-insurance-pricing-project.onrender.com/docs
+- Testé en public : `/health` et `/predict` répondent correctement, résultats identiques au test en local et dans Docker.
+
+⚠️ Plan Free : le service s'endort après 15 minutes sans trafic et met quelques secondes à se "réveiller" à la requête suivante (cold start). Normal, sans impact pour une démo/soutenance.
 
 ---
 
